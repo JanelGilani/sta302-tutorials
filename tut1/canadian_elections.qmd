@@ -1,0 +1,137 @@
+---
+title: "Canadian Elections 2021"
+author: "Janel Gilani"
+format: html
+---
+
+Github Link: https://github.com/JanelGilani/sta302-tutorials
+
+```{r}
+#### Preamble ####
+# Purpose: Read in data from the 2021 Canadian Election and make
+# a graph of the number of seats each party won.
+# Author: Janel Gilani
+# Email: janel.gilani@mail.utoronto.ca
+# Date: 1 January 2023
+# Prerequisites: Know where to get Canadian elections data.
+```
+
+
+```{r}
+#### Workspace setup ####
+#install.packages("tidyverse")
+#install.packages("janitor")
+
+
+library(tidyverse)
+library(janitor)
+
+```
+
+```{r}
+simulated_data <-
+  tibble(
+    "Division" = 1:338,
+    "Party" = sample(
+      x = c("Liberal", "Conservative", "Bloc Québécois", "New Democratic", "Green", "Other"),
+      size = 338,
+      replace = TRUE
+    )
+  )
+
+simulated_data
+
+```
+
+```{r}
+#### Basic cleaning ####
+raw_elections_data <-
+  read_csv(
+    file = "table_tableau11.csv",
+    show_col_types = FALSE
+  )
+```
+
+```{r}
+# Make the names easier to type
+cleaned_elections_data <-
+  clean_names(raw_elections_data)
+
+# Have a look at the first six rows
+head(cleaned_elections_data)
+```
+
+```{r}
+cleaned_elections_data <-
+  cleaned_elections_data |>
+  select(
+    electoral_district_name_nom_de_circonscription,
+    elected_candidate_candidat_elu
+  )
+
+head(cleaned_elections_data)
+
+```
+
+
+```{r}
+cleaned_elections_data <-
+  cleaned_elections_data |>
+  rename(
+    district = electoral_district_name_nom_de_circonscription,
+    elected_candidate = elected_candidate_candidat_elu
+  )
+
+head(cleaned_elections_data)
+```
+
+
+```{r}
+cleaned_elections_data <-
+  cleaned_elections_data |>
+  separate(
+    col = elected_candidate,
+    into = c("Other", "party"),
+    sep = "/"
+  ) |>
+  select(-Other)
+```
+
+```{r}
+cleaned_elections_data <- cleaned_elections_data |>
+  mutate(
+    party = recode(
+      party,
+      "Libéral" = "Liberal",
+      "Conservateur" = "Conservative",
+      "Bloc Québécois" = "Bloc Québécois",
+      "NPD-Nouveau Parti démocratique" = "New Democratic",
+      "Parti Vert" = "Green",
+      "Autre" = "Other"
+    )
+  )
+head(cleaned_elections_data)
+
+```
+
+
+```{r}
+cleaned_elections_data |>
+  ggplot(aes(x = party)) +
+  geom_bar() +
+  geom_text(stat='count', aes(label=after_stat(count)), vjust=-0.5, size=3) + # Add text labels with count
+  theme_minimal() +
+  labs(x = "Party", y = "Number of ridings") 
+
+```
+
+Analysis:
+
+Canada operates under a parliamentary democracy with 338 seats in the House of Commons, serving as the lower house and pivotal for government formation. In the 2021 Federal Election, the political landscape featured two dominant parties—“Liberal” and “Conservative”—alongside three minor parties—“Bloc Québécois,” “New Democratic,” and “Green”—in addition to numerous smaller parties and independent candidates.
+
+A graphical representation showcasing the seat distribution among the various political entities reveals a distinct pattern (Figure above). The Liberal Party secured a notable victory with 160 seats, positioning itself as the leading party. Following closely, the Conservative Party claimed 119 seats, cementing its substantial presence in the House of Commons. The minor parties obtained the following number of seats: Bloc Québécois acquired 32 seats, New Democratic gained 25 seats, while the Green Party secured 2 seats. Notably, other smaller parties didn't secure any seats in this election.
+
+The allocation of seats underscores a clear dominance by the two major parties, potentially indicative of established voter preferences or possibly influenced by existing advantages, such as national recognition or financial support. Understanding the underlying reasons for this distribution warrants further investigation in subsequent studies.
+
+It's worth acknowledging that while the dataset encompasses the majority of voters, Canada exhibits systemic exclusions from voting, presenting varying degrees of difficulty for different demographics to participate in the electoral process.
+
