@@ -69,9 +69,6 @@ library(opendatatoronto)
 
 ```{r}
 #| echo: false
-#### Data Simulation ####
-
-set.seed(302)
 
 outbreak_simulated_data <-
   tibble("ID" = 1:50,
@@ -87,29 +84,28 @@ head(outbreak_simulated_data) |>
 
 ```{r}
 #| echo: false
-#### Downloading and Cleaning Dataset ####
 
 # Downloading the dataset
-outbreak_data_2020 <-
+ob_data <-
   search_packages("Outbreaks in Toronto Healthcare Institutions") |>
   list_package_resources() |>
   filter(name == "ob_report_2020") |>
   get_resource()
 
 # Saving the raw data as a CSV file
-write_csv(outbreak_data_2020, "raw_data.csv")
+write_csv(ob_data, "raw_data.csv")
 
 # Renaming the two columns of interest
-outbreak_data_2020 <- outbreak_data_2020 |>
+ob_data <- ob_data |>
   rename(ID = "_id",
          Cause = "Causative Agent - 1")
 
 # Isolating the two columns of interest
-outbreak_data_2020 <- outbreak_data_2020 |>
+ob_data <- ob_data |>
   select(ID, Cause)
 
 # Renaming the location types for clarity
-outbreak_data_2020 <- outbreak_data_2020 |>
+ob_data <- ob_data |>
   mutate(Cause = case_match(Cause,
                              "Coronavirus*" ~ "COVID-19",
                             "COVID-19" ~ "COVID-19",
@@ -122,7 +118,7 @@ outbreak_data_2020 <- outbreak_data_2020 |>
 
 
 # Saving the final cleaned data as a CSV file
-write_csv(outbreak_data_2020, "final_cleaned_data.csv")
+write_csv(ob_data, "final_cleaned_data.csv")
 ```
 
 # Results
@@ -132,14 +128,14 @@ write_csv(outbreak_data_2020, "final_cleaned_data.csv")
 #### Generating a Table and a Graph ####
 
 # Collecting the number of outbreaks for each location type
-outbreak_data_2020 |>
+ob_data |>
   count(Cause) |>
   rename(`Cause` = Cause,
          `Number of outbreaks in 2020` = n) |>
   kable(caption = "Number of Outbreaks by Cause in Toronto from 2020")
 
 # Generating a bar graph to illustrate the number of outbreaks for each location type
-outbreak_data_2020 |>
+ob_data |>
   ggplot(aes(x = Cause)) +
   geom_bar() +
   theme_bw() +
