@@ -1,0 +1,175 @@
+---
+title: "Assessing the Causes of Disease Outbreaks in Toronto in 2020"
+author: "Janel Gilani"
+format: pdf
+---
+
+# GitHub Repository Link
+
+<https://github.com/JanelGilani/sta302-tutorials.git>
+
+This 'tut2' directory in the GitHub Repository includes the R code and Figures involved in creating this report.
+
+# Preamble Documentation
+
+```{r}
+#### Preamble ####
+
+# Purpose: Employ data pertaining to 2020 disease outbreaks in Toronto
+# in order to create a graph of the number of outbreaks caused by each cause
+# Author: Janel Gilani
+# Email: janel.gilani@mail.utoronto.ca
+# Date: January 16, 2024
+# Prerequisites: Ability to acquire data regarding 2020 disease outbreaks
+# in Toronto.
+```
+
+```{r}
+#| echo: false
+#### Workspace setup #### 
+## (Installing packages (only needs to be done once per computer))
+#install.packages("AER")
+#install.packages("future")
+#install.packages("gitcreds")
+#install.packages("knitr")
+#install.packages("lintr")
+#install.packages("renv")
+#install.packages("reprex")
+#install.packages("styler")
+#install.packages("tictoc")
+#install.packages("tidyverse")
+#install.packages("tinytex")
+#install.packages("usethis")
+#install.packages("ggplot2")
+#install.packages("opendatatoronto")
+
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+library(AER)
+library(future)
+library(gitcreds)
+library(knitr)
+library(lintr)
+library(renv)
+library(reprex)
+library(styler)
+library(tictoc)
+library(tidyverse)
+library(tinytex)
+library(usethis)
+library(ggplot2)
+library(opendatatoronto)
+```
+
+# Data Simulation
+
+```{r}
+#| echo: false
+#### Data Simulation ####
+
+set.seed(302)
+
+outbreak_simulated_data <-
+  tibble("ID" = 1:50,
+         "Cause" = sample(
+           x = c("COVID-19", "Influenza A", "Norovirus", "Metapneumovirus", "Respiratory syncytial virus", "Other"),
+           size = 50,
+           replace = TRUE)
+         )
+
+head(outbreak_simulated_data) |>
+  kable(caption = "Simulated 2020 Toronto Outbreak Data")
+```
+
+```{r}
+#| echo: false
+#### Downloading and Cleaning Dataset ####
+
+# Downloading the dataset
+outbreak_data_2020 <-
+  search_packages("Outbreaks in Toronto Healthcare Institutions") |>
+  list_package_resources() |>
+  filter(name == "ob_report_2020") |>
+  get_resource()
+
+# Saving the raw data as a CSV file
+write_csv(outbreak_data_2020, "raw_data.csv")
+
+# Renaming the two columns of interest
+outbreak_data_2020 <- outbreak_data_2020 |>
+  rename(ID = "_id",
+         Cause = "Causative Agent - 1")
+
+# Isolating the two columns of interest
+outbreak_data_2020 <- outbreak_data_2020 |>
+  select(ID, Cause)
+
+# Renaming the location types for clarity
+outbreak_data_2020 <- outbreak_data_2020 |>
+  mutate(Cause = case_match(Cause,
+                             "Coronavirus*" ~ "COVID-19",
+                            "COVID-19" ~ "COVID-19",
+                            "Norovirus" ~ "Norovirus",
+                            "Metapneumovirus" ~ "Metapneumovirus",
+                            "Respiratory syncytial virus" ~ "Respiratory syncytial virus",
+                             "Influenza A ((H1N1)pdm09)" ~ "Influenza A",
+                             "Influenza A (Not subtyped)" ~ "Influenza A")) |>
+  mutate(Cause = if_else(is.na(Cause) | Cause == "", "Other", Cause))
+
+
+# Saving the final cleaned data as a CSV file
+write_csv(outbreak_data_2020, "final_cleaned_data.csv")
+```
+
+# Results
+
+```{r}
+#| echo: false
+#### Generating a Table and a Graph ####
+
+# Collecting the number of outbreaks for each location type
+outbreak_data_2020 |>
+  count(Cause) |>
+  rename(`Cause` = Cause,
+         `Number of outbreaks in 2020` = n) |>
+  kable(caption = "Number of Outbreaks by Cause in Toronto from 2020")
+
+# Generating a bar graph to illustrate the number of outbreaks for each location type
+outbreak_data_2020 |>
+  ggplot(aes(x = Cause)) +
+  geom_bar() +
+  theme_bw() +
+  labs(x = "Cause", y = "Number of outbreaks in 2020") +
+  ggtitle("Figure 3: 2020 Toronto Outbreak Data") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+# Discussion
+
+In 2020, Toronto experienced a significant public health challenge as evident from the outbreak data collected and analyzed in this study. The investigation aimed to assess the number of outbreaks by disease type and location in the city during the specified year. The data, sourced from Toronto Public Health via the opendatatoronto package for R programming (Gelfand 2022), underwent thorough cleaning using the janitor (Firke 2023), tidyverse (Wickham et al. 2019), and knitr (Xie 2023) packages.
+
+Table 2 and Figure 3 present a comprehensive overview of the outbreak statistics, highlighting the distribution of outbreaks across various health care facilities in Toronto in 2020. Notably, COVID-19 emerged as a dominant health concern, with 407 documented outbreaks. In addition to COVID-19, there were 32 outbreaks attributed to Influenza A, 17 to Metapneumovirus, 78 to other causes, and 192 to Respiratory syncytial virus.
+
+The prevalence of COVID-19 outbreaks, as illustrated by the data, underscores the profound impact of the pandemic on the health landscape of Toronto in 2020. These findings echo the global challenges faced during the pandemic, emphasizing the need for comprehensive public health strategies to mitigate the spread of infectious diseases. The study provides valuable insights into the distribution of outbreaks, contributing to a better understanding of the city's health dynamics during this critical period (Toronto Public Health 2024).
+
+
+# References
+
+Alexander, Rohan. 2023. *Telling Stories with Data*. 1st ed. Boca Raton: CRC Press. <https://tellingstorieswithdata.com/>.
+
+Firke, Sam. 2023. *janitor: Simple Tools for Examining and Cleaning Dirty Data.* <https://CRAN.R-project.org/package=janitor>.
+
+Gelfand, Sharla. 2022. *opendatatoronto: Access the City of Toronto Open Data Portal*. <https://cran.r-project.org/package=opendatatoronto>.
+
+R Core Team. 2023. *R: A Language and Environment for Statistical Computing.* Vienna, Austria: R Foundation for Statistical Computing. <https://www.R-project.org/>.
+
+Toronto Public Health. 2024. "Outbreaks in Toronto Healthcare Institutions." *City of Toronto*, January. <https://open.toronto.ca/dataset/outbreaks-in-toronto-healthcare-institutions/>.
+
+Wickham, Hadley, Mara Averick, Jenny Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. “Welcome to the Tidyverse.” *Journal of Open Source Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
+
+Xie, Yihui. 2023. *knitr: A General-Purpose Package for Dynamic Report Generation in R*. <https://yihui.org/knitr/>.
