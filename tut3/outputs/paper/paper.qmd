@@ -2,6 +2,8 @@
 title: "Systematic Racism in Predictive Policing Dataset"
 author: 
   - Janel Gilani
+thanks: "All files associated with this analysis can be found here: <https://github.com/JanelGilani/sta302-tutorials/blob/main/tut3/outputs/paper/paper.pdf>"
+  
 date: "January 23, 2024"
 date-format: long
 format: pdf
