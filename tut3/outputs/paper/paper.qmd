@@ -1,0 +1,33 @@
+---
+title: "Systematic Racism in Predictive Policing Dataset"
+author: 
+  - Janel Gilani
+date: "January 23, 2024"
+date-format: long
+format: pdf
+bibliography: references.bib
+---
+
+> "I think we should be suspicious when we find ourselves attracted to data---very, very thin and weak data---that seem to justify beliefs that have held great currency in lots of societies throughout history, in a way that is conducive to the oppression of large segments of the population."
+> 
+> Amia Srinivasan [@cowen]
+
+The quote by Amia Srinivasan serves as a vital reminder to question data that might reinforce long-standing societal beliefs, particularly when it's weak and has the potential to contribute to the oppression of certain groups (Cowen 2021). This is especially relevant in the context of predictive policing tools, as outlined in the research paper "Dirty Data, Bad Predictions" by Rashida Richardson [@richardson]. The paper sheds light on a troubling reality where law enforcement agencies, even when implicated in corrupt and racially biased practices, actively contribute data to build predictive policing systems.
+
+The dataset scrutinized in Richardson's research paper revolves around predictive policing systems constructed on data derived from flawed, racially biased, and sometimes illegal law enforcement practices, succinctly termed as "dirty policing" [@richardson]. Encompassing thirteen jurisdictions, including prominent locations like Chicago, New Orleans, and Maricopa County, the dataset reveals a concerning scenario where law enforcement agencies, under investigation for misconduct, persist in utilizing data that reflects systemic biases and misconduct.
+
+The research paper specifically highlights Chicago as a case where "dirty data" was directly integrated into the city's predictive system, indicating a lack of caution in utilizing data from a jurisdiction under investigation for biased policing practices [@mit]. This negligence has far-reaching consequences, as predictive policing tools, informed by tainted data, find themselves unable to extricate from the legacies of unlawful or biased practices. This algorithmic justification from flawed data can lead to further instances of police harassment in minority and low-income communities, establishing a harmful loop that exacerbates the impact of biased predictions [@mit].
+
+Furthermore, the research paper extensively explores the specific cases of New Orleans and Maricopa County, where a multitude of evidence shedding light on dirty policing practices raises legitimate concerns about the potential incorporation of tainted data into predictive policing systems [@richardson]. The lack of transparency in elucidating the intricate details of predictive policing systems in Maricopa County further compounds the challenge of conducting a thorough risk assessment, creating a complex landscape fraught with potential pitfalls and uncertainties. The findings from these cases not only underscore but magnify the widespread implications of deploying predictive policing systems in jurisdictions with well-documented histories of unlawful practices.
+
+In New Orleans, the evidence of dirty policing practices suggests a high risk of tainted data being utilized in predictive policing, adding a layer of complexity to the ethical and operational considerations of such systems. The opaque nature surrounding the specifics of predictive policing mechanisms in Maricopa County introduces an additional layer of concern, preventing a comprehensive understanding of the potential risks associated with the utilization of dirty data. This lack of transparency not only hampers the ability to assess the reliability of predictive policing tools but also raises questions about accountability and the safeguards in place to mitigate the risks associated with using data tainted by systemic biases and unlawful practices [@richardson].
+
+The heightened risks associated with deploying predictive policing systems in such jurisdictions extend beyond the immediate concerns of biased predictions. The algorithms, trained on data originating from law enforcement practices rife with corruption and bias, risk perpetuating and amplifying these harmful patterns within the criminal justice system. The consequences, therefore, have ripple effects, influencing not only the accuracy of predictions but also exacerbating existing inequalities and injustices within marginalized communities.
+
+The in-depth examination of New Orleans and Maricopa County dataset amplifies the concerns surrounding the use of dirty data in predictive policing. The lack of transparency compounds the challenges associated with assessing risks and underscores the far-reaching implications of deploying predictive policing systems in jurisdictions marked by a history of unlawful practices. These findings emphasize the urgent need for transparent and ethical practices in developing and implementing predictive policing tools to ensure that they do not perpetuate or exacerbate existing issues within the criminal justice system [@richardson].
+
+In conclusion, the dataset scrutinized in Richardson's research paper exemplifies the real-world consequences of incorporating flawed and biased data into predictive policing systems. The scrutiny of jurisdictions under investigation for biased practices underscores the urgent need for caution and meticulous examination when deploying such tools. Amia Srinivasan's quote remains a poignant reminder to approach data with suspicion when it appears to justify beliefs that historically oppressed certain communities (Cowen 2021). Addressing the use of dirty data in predictive policing becomes imperative to prevent the perpetuation of harmful practices and biases within law enforcement algorithms [@mit].
+
+\newpage
+
+# References
