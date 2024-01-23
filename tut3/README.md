@@ -1,4 +1,4 @@
-# Starter folder
+# Mini Essay 3
 
 ## Overview
 
